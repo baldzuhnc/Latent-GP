@@ -1,4 +1,4 @@
-![plots/cover.png]
+![bruh](plots/cover.png)
 
 # Latent GPIRT: Gaussian Process Item Response Theory
 
