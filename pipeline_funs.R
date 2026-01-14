@@ -36,6 +36,20 @@ get_latest <- function(country){
   return(files[which.max(wave_numbers)])
 }
 
+check_vars <- function(data, vars) {
+  # Check if all items have the same scale length
+  max_values <- data$df |>
+    summarise(across(all_of(vars$vars), ~ max(.x, na.rm = TRUE))) |>
+    as_vector()
+  
+  if (length(unique(max_values)) != 1) {
+    message("Items have different scale lengths. Stopping.")
+    cat("Max values per item:\n")
+    print(max_values)
+    stop("Scale length mismatch detected")
+  }
+}
+
 get_data <- function(country, waves_from, waves_to, consec_missings, vars, title = "", length_scale){
   # Short: build a data descriptor list for later pipeline steps.
   # Args: country, waves_from/waves_to (integers), consec_missings (int), vars (character vector)
@@ -43,6 +57,8 @@ get_data <- function(country, waves_from, waves_to, consec_missings, vars, title
   
   data <- readRDS(get_latest(country)) %>% 
     dplyr::select(wave, pid, all_of(vars))
+
+  check_vars(data, vars)
   
   title <- paste0(
     country, "_", 
@@ -63,7 +79,6 @@ get_data <- function(country, waves_from, waves_to, consec_missings, vars, title
   
   return(ret)
 }
-
 
 subset_data <- function(data, cutoff_ids = NULL){
 	

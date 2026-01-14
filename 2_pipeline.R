@@ -39,7 +39,7 @@ if (!varset_name %in% names(varsets)) {
   stop(sprintf("Unknown varset '%s'. Available: %s", varset_name, paste(names(varsets), collapse = ", ")))
 }
 
-vars <- list(title = varset_name, vars = varsets[[varset_name]])
+vars <- list(title = varset_name, vars = varsets[[varset_name]]) #list
 
 data <- get_data(country, waves_from, waves_to, consec_missings, vars$vars, vars$title, length_scale)
 
