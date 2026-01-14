@@ -1,6 +1,6 @@
 ![bruh](plots/cover.png)
 
-# Latent GPIRT: Gaussian Process Item Response Theory
+# Estimating continuous attitudes from likert panel data using latent gaussian processes
 
 This project implements a Gaussian Process Latent Trajectory Model within an Item Response Theory (IRT) framework. It is designed to estimate individual-level trajectories of attitudes or traits over multiple survey waves.
 
@@ -15,12 +15,16 @@ This project implements a Gaussian Process Latent Trajectory Model within an Ite
 - Output is stored in `data/de/` or `data/us/`.
 
 ### 3. Fit the Model (`2_pipeline.R`)
-This script runs the Stan model. You can use it in two ways:
-- **Interactive:** Open the script and set variables like `country`, `varset_name`, and `waves_from:waves_to` at the top.
+This script runs the Stan model.
+
+Open the script and add the item names representing your latent concept of interest to the `varsets` dictionary. The model expects items with the same number of response categories with equal coding! Reverse coding must be performed manually. Once the items are set, the script can be run in two ways:
+
+- **Interactive:** Open the script and set variables like `country`, `varset_name`, and `waves_from:waves_to` at the top. 
 - **CLI (Batch):** Run from the terminal for automated processing:
   ```bash
   Rscript 2_pipeline.R de trust 55 65
   ```
+Either way, model estimation is time intensive and it is recommended to work with tmux shells. Interactive use permits using custom plotting functions to visualize the raw data before running the sampler.
 - **Outputs:** Stan fits are saved in `fitted/`, and summaries are saved in `gp_summary/`.
 
 ### 4. Analyze Results (`3_analysis.R`)
