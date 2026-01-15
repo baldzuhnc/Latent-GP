@@ -4,7 +4,7 @@
 
 This project implements a Gaussian Process Latent Trajectory Model within an Item Response Theory (IRT) framework. It is designed to estimate individual-level trajectories of attitudes or traits over multiple survey waves.
 
-Functions for data loading and preparation are tailored to applications within the [SOSEC-Project](https://www.socialsentiment.org/) located at [Forschungszentrum Informatik](https://www.fzi.de/) but can easily be generalized.
+Functions for data loading and preparation are tailored to applications within the [SOSEC-Project](https://www.socialsentiment.org/en/homepage/) located at [Forschungszentrum Informatik](https://www.fzi.de/en/) but can easily be generalized.
 
 ## Workflow Overview
 
