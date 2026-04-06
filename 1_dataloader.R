@@ -1,7 +1,8 @@
-if (!require("pacman")) install.packages("pacman")
+if (!require("pacman")) {
+  install.packages("pacman")
+}
 library(pacman)
-p_load(tidyverse)
-p_load(vroom)
+p_load(tidyverse, vroom)
 
 #' Process Panel Data CSV to RDS
 #' Reads a fixed CSV path, renames unique_id to pid, and saves to country subfolder.
@@ -21,7 +22,9 @@ process_data <- function(file_path, country_code) {
   # Detect wave and ensure output directory
   wv <- max(df$wave, na.rm = TRUE)
   out_dir <- file.path("data", country_code)
-  if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)
+  if (!dir.exists(out_dir)) {
+    dir.create(out_dir, recursive = TRUE)
+  }
 
   out_file <- file.path(out_dir, sprintf("W%s_%s.rds", wv, country_code))
 
