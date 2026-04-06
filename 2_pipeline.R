@@ -7,41 +7,53 @@ source("pipeline_funs.R")
 
 # Define available varsets
 varsets <- list(
-  trust      = c("F5A2_1", "F5A3_1", "F5A4_1", "F5A5_1", "F5A6_2", "F5A7_1"),
+  trust = c("F5A2_1", "F5A3_1", "F5A4_1", "F5A5_1", "F5A6_2", "F5A7_1"),
   discontent = c('F1A10_1', 'F1A16_1', 'F1A17_1', 'F1A19_1'),
-  efficacy   = c('F1A5_2', 'F1A10_2'),
-  anger      = c('F1A9_1', 'F1A15_1'),
+  efficacy = c('F1A5_2', 'F1A10_2'),
+  anger = c('F1A9_1', 'F1A15_1'),
   conspiracy = c('F1A16_2', 'F1A17_2', 'F5cA3_1')
 )
 
 args <- commandArgs(trailingOnly = TRUE)
 
 if (length(args) >= 4) {
-  country         <- args[1]
-  varset_name     <- args[2]
-  waves_from      <- as.integer(args[3])
-  waves_to        <- as.integer(args[4])
+  country <- args[1]
+  varset_name <- args[2]
+  waves_from <- as.integer(args[3])
+  waves_to <- as.integer(args[4])
   consec_missings <- ifelse(length(args) >= 5, as.integer(args[5]), 2) #Optional: Set consecutive missings in command arguments, default: 2
-  length_scale    <- ifelse(length(args) >= 6, as.numeric(args[6]), 4.0) #Optional: Set consecutive missings in command arguments, default: 4
+  length_scale <- ifelse(length(args) >= 6, as.numeric(args[6]), 4.0) #Optional: Set consecutive missings in command arguments, default: 4
 } else {
   # Default settings for interactive use
   # Default settings for interactive use
   # Default settings for interactive use
-  country         <- "de"
-  varset_name     <- "anger"
-  waves_from      <- 55
-  waves_to        <- 65
+  country <- "de"
+  varset_name <- "trust"
+  waves_from <- 55
+  waves_to <- 65
   consec_missings <- 2
-  length_scale    <- 4.0
+  length_scale <- 4.0
 }
 
 if (!varset_name %in% names(varsets)) {
-  stop(sprintf("Unknown varset '%s'. Available: %s", varset_name, paste(names(varsets), collapse = ", ")))
+  stop(sprintf(
+    "Unknown varset '%s'. Available: %s",
+    varset_name,
+    paste(names(varsets), collapse = ", ")
+  ))
 }
 
 vars <- list(title = varset_name, vars = varsets[[varset_name]]) #list
 
-data <- get_data(country, waves_from, waves_to, consec_missings, vars$vars, vars$title, length_scale)
+data <- get_data(
+  country,
+  waves_from,
+  waves_to,
+  consec_missings,
+  vars$vars,
+  vars$title,
+  length_scale
+)
 
 # Wrangle data ####
 
@@ -54,8 +66,11 @@ if (nrow(subsetted_data) == 0) {
 
 cat("Observations per wave:\n")
 print(table(subsetted_data$wave))
-cat("\nUnique individuals in timeframe: ",
-    length(unique(subsetted_data$pid)), "\n")
+cat(
+  "\nUnique individuals in timeframe: ",
+  length(unique(subsetted_data$pid)),
+  "\n"
+)
 cat("====================================\n\n")
 
 
@@ -74,7 +89,6 @@ model_data <- stan_ready$model_data
 
 pid_map <- stan_ready$pid_map
 wave_map <- stan_ready$wave_map
-
 
 
 # ========== Run model & save ============
